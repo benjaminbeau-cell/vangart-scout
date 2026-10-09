@@ -1,0 +1,197 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VANGART Scout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{--bg:#eef0f3;--surface:#ffffff;--fg:#17191f;--muted:#5d6370;--line:#d6dae1;--accent:#2f45c4;--accent-soft:#e3e7fb;--ok:#1d7a4c;--warn:#a35a00;
+--display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;--body:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;--mono:"IBM Plex Mono",ui-monospace,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121419;--surface:#1b1e25;--fg:#eceef3;--muted:#9aa1ae;--line:#2c313b;--accent:#8c9cff;--accent-soft:#252b4a;--ok:#5cc595;--warn:#e0a453;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121419;--surface:#1b1e25;--fg:#eceef3;--muted:#9aa1ae;--line:#2c313b;--accent:#8c9cff;--accent-soft:#252b4a;--ok:#5cc595;--warn:#e0a453;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:15px;line-height:1.5}
+.wrap{max-width:1100px;margin:0 auto;padding-inline:16px;padding-block:32px 120px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,44px);line-height:1.05;margin:6px 0 0;text-wrap:balance}
+.lead{margin:8px 0 0;color:var(--muted);max-width:68ch}
+.tabs{display:flex;gap:4px;margin:24px 0 16px;border-bottom:1px solid var(--line)}
+.tab{font:inherit;font-weight:500;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);padding:8px 12px;cursor:pointer;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--fg);border-color:var(--accent)}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.panel{display:grid;gap:20px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px}
+.box h2{font-family:var(--display);font-weight:500;font-size:20px;margin:0 0 10px}
+form.search{display:flex;flex-wrap:wrap;gap:8px}
+form.search input{flex:1 1 260px;min-width:0;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:4px;background:var(--bg);color:var(--fg)}
+form.search input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.btn{font:inherit;font-weight:500;border:1px solid var(--accent);background:var(--accent);color:var(--surface);border-radius:4px;padding:10px 14px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent);padding:6px 10px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:default}
+.hint{font-size:13px;color:var(--muted);margin:10px 0 0}
+.flash{margin:12px 0 0;padding:10px 12px;border-radius:4px;background:var(--accent-soft);font-size:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.list li{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:8px 0;border-top:1px solid var(--line)}
+.list li:first-child{border-top:0}
+.list .h{font-family:var(--mono);font-size:14px}
+.list .d{font-size:12px;color:var(--muted)}
+.chip{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:3px;border:1px solid currentColor}
+.chip.wait{color:var(--muted)}.chip.run{color:var(--warn)}.chip.ok{color:var(--ok)}
+.grow{flex:1}
+.artists{display:flex;flex-wrap:wrap;gap:8px}
+.artists button{font:inherit;font-size:14px;background:var(--surface);border:1px solid var(--line);color:var(--fg);border-radius:999px;padding:6px 12px;cursor:pointer}
+.artists button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.rhead{display:grid;gap:8px;max-width:72ch}
+.rhead h2{font-family:var(--display);font-weight:700;font-size:clamp(24px,4vw,34px);margin:0;line-height:1.1}
+.rhead p{margin:0;color:var(--muted)}
+.sortbar{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.sortbar button{font:inherit;font-size:13px;background:none;border:1px solid var(--line);color:var(--fg);border-radius:4px;padding:4px 9px;cursor:pointer}
+.sortbar button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,480px),1fr));gap:20px}
+.card{position:relative;display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:18px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:16px}
+.card.sel{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.rank{position:absolute;top:10px;left:10px;z-index:1;font-family:var(--mono);font-size:13px;background:var(--fg);color:var(--bg);padding:2px 7px;border-radius:3px;font-variant-numeric:tabular-nums}
+figure{margin:0;background:var(--bg);border-radius:4px;overflow:hidden;align-self:start;min-height:80px}
+figure img{display:block;width:100%;height:auto}
+.cbody{min-width:0;display:flex;flex-direction:column;gap:10px}
+.ttl{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.ttl h3{font-family:var(--display);font-weight:500;font-size:20px;line-height:1.15;margin:0;text-wrap:balance}
+.total{font-family:var(--display);font-weight:700;font-size:28px;line-height:1;color:var(--accent);font-variant-numeric:tabular-nums;text-align:right}
+.total small{display:block;font-family:var(--mono);font-weight:500;font-size:10px;color:var(--muted);letter-spacing:.06em}
+.sub{margin:-6px 0 0;font-size:13px;color:var(--muted)}
+.axes{display:grid;gap:5px}
+.axis{display:grid;grid-template-columns:96px 1fr 30px;gap:8px;align-items:center;font-size:12px}
+.axis span:first-child{text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.bar{height:6px;background:var(--accent-soft);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent)}
+.axis b{font-family:var(--mono);font-weight:500;text-align:right;font-variant-numeric:tabular-nums}
+.facts{display:flex;flex-wrap:wrap;gap:6px;font-size:12px}
+.facts span{background:var(--bg);border-radius:3px;padding:2px 7px}
+.facts .flag{color:var(--warn)}
+.note{margin:0;font-size:14px}
+.meta{margin:auto 0 0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);font-family:var(--mono)}
+.meta a{color:var(--accent)}
+.pick{font:inherit;font-size:14px;font-weight:500;border:1px solid var(--accent);color:var(--accent);background:transparent;border-radius:4px;padding:8px 12px;cursor:pointer}
+.pick:hover,.card.sel .pick{background:var(--accent);color:var(--surface)}
+details.method{font-size:14px}
+details.method summary{cursor:pointer;font-weight:500}
+details.method table{border-collapse:collapse;margin-top:10px;width:100%}
+details.method td,details.method th{text-align:left;padding:6px 8px;border-top:1px solid var(--line);vertical-align:top}
+details.method th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+.empty{color:var(--muted);font-size:14px;margin:0}
+.sticky{position:fixed;left:0;right:0;bottom:0;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:1px solid var(--line);display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px}
+.sticky strong{font-family:var(--display);font-weight:500}
+@media (max-width:560px){.card{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style><style>body{margin:0}</style></head><body>
+<div class="wrap">
+<span class="eyebrow">VANGART · Scout v2</span>
+<h1>Top 10 brodable</h1>
+<p class="lead">Colle le lien Instagram d'un artiste : je classe ses dix œuvres les plus adaptées à VANGART, brodables et vendables, avec un score détaillé.</p>
+
+<div class="tabs" role="tablist">
+<button class="tab" role="tab" id="t-search" aria-controls="p-search" aria-selected="true">Recherche</button>
+<button class="tab" role="tab" id="t-results" aria-controls="p-results" aria-selected="false">Résultats</button>
+</div>
+
+<section class="panel" id="p-search" role="tabpanel" aria-labelledby="t-search">
+<div class="box">
+<h2>Nouvel artiste</h2>
+<form class="search" id="form" autocomplete="off">
+<input id="q" type="text" inputmode="url" placeholder="https://www.instagram.com/pseudo ou @pseudo" aria-label="Lien Instagram de l'artiste">
+<button class="btn" id="go" type="submit">Lancer le top 10</button>
+</form>
+<p class="hint">Option : ajoute une précision après le lien (ex. « que les peintures récentes »). Instagram bloque la lecture directe depuis la page : la demande part dans la file, et je produis le top 10 dès que tu me dis « scout » dans le chat.</p>
+<div id="flash" hidden></div>
+</div>
+<div class="box">
+<h2>File d'attente</h2>
+<ul class="list" id="queue"><li class="empty">Chargement…</li></ul>
+</div>
+<div class="box">
+<details class="method">
+<summary>Comment le score est calculé</summary>
+<table>
+<tr><th>Critère</th><th>Poids</th><th>Ce qui est regardé</th></tr>
+<tr><td>Brodabilité</td><td>35 %</td><td>Formes lisibles, contours nets, nombre de couleurs de fil, peu de dégradés fins ou d'effets photo, matière qui se traduit en points.</td></tr>
+<tr><td>Bankabilité</td><td>30 %</td><td>Engagement du post comparé à la médiane du compte, actualité (galerie, musée, foire), série phare, éditions déjà faites par l'artiste.</td></tr>
+<tr><td>Impact visuel</td><td>20 %</td><td>Force de l'image au format édition (50 à 80 cm) et en vignette.</td></tr>
+<tr><td>Test rapide</td><td>15 %</td><td>Un seul panneau, format raisonnable, points et changements de fil estimés.</td></tr>
+</table>
+<p class="hint">Score sur 100, moins d'éventuels malus (pas une œuvre vendable, droits partagés, image trop floue). Exclus d'office : œuvres d'autres artistes, sculptures, installations, vues d'expo illisibles. Points et couleurs sont des ordres de grandeur pour un format d'environ 60 cm.</p>
+</details>
+</div>
+</section>
+
+<section class="panel" id="p-results" role="tabpanel" aria-labelledby="t-results" hidden>
+<div class="artists" id="artists"><p class="empty">Chargement…</p></div>
+<div id="report"></div>
+</section>
+</div>
+<div class="sticky" role="status" hidden id="sticky"><span id="msg"></span><button type="button" class="btn ghost" id="copy">Copier</button></div>
+
+<script>
+const W={brod:.35,bank:.30,impact:.20,test:.15};
+const AX=[['brod','Brodabilité'],['bank','Bankabilité'],['impact','Impact'],['test','Test rapide']];
+const $=id=>document.getElementById(id);
+let db=null,reports=[],requests=[],current=null,sortKey='total',copyTxt='';
+const el=(t,c,txt)=>{const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e};
+const total=w=>Math.max(0,Math.round(10*(AX.reduce((s,[k])=>s+(+w.scores?.[k]||0)*W[k],0))-(+w.malus||0)));
+const fmtDate=s=>{try{return new Date(s).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'numeric'})}catch(e){return ''}};
+const fmtLikes=n=>n==null?'likes non affichés':(n>=1000?(n/1000).toLocaleString('fr-FR',{maximumFractionDigits:1})+' k':n)+' likes';
+
+function parseHandle(v){v=v.trim();const m=v.match(/instagram\.com\/([A-Za-z0-9._]{1,30})/i)||v.match(/^@?([A-Za-z0-9._]{1,30})(\s|$)/);if(!m)return null;const h=m[1].toLowerCase();if(['p','reel','reels','stories','explore'].includes(h))return null;const rest=v.replace(m[0],'').replace(/^[\/?#][^\s]*/,'').trim();return{handle:h,note:rest}}
+
+function setTab(name){for(const[t,p]of[['t-search','p-search'],['t-results','p-results']]){const on=t==='t-'+name;$(t).setAttribute('aria-selected',on);$(p).hidden=!on}try{localStorage.setItem('scoutTab',name)}catch(e){}}
+$('t-search').onclick=()=>setTab('search');$('t-results').onclick=()=>setTab('results');
+
+function flash(text,copy){const f=$('flash');f.hidden=false;f.className='flash';f.replaceChildren(el('span','grow',text));if(copy){const b=el('button','btn ghost','Copier le message');b.type='button';b.onclick=()=>navigator.clipboard.writeText(copy).then(()=>b.textContent='Copié').catch(()=>b.textContent='Copie impossible');f.append(b)}}
+
+$('form').addEventListener('submit',async e=>{e.preventDefault();const p=parseHandle($('q').value);if(!p){flash('Lien non reconnu. Colle l\'adresse du profil, par exemple https://www.instagram.com/idaekblad/');return}
+const msg='scout @'+p.handle+(p.note?' ('+p.note+')':'');
+if(!db){flash('Version GitHub en lecture seule. Envoie ce message à Claude pour lancer l\'analyse :',msg);return}
+$('go').disabled=true;
+try{await db.doc('requests/'+p.handle).set({handle:p.handle,url:'https://www.instagram.com/'+p.handle+'/',note:p.note||'',status:'en_attente',createdAt:new Date().toISOString()});$('q').value='';
+const done=reports.some(r=>r.handle===p.handle);
+flash('@'+p.handle+(done?' : déjà analysé, la demande relancera une version à jour.':' ajouté à la file.')+' Dis « scout » dans le chat Claude pour que je le traite.',msg)}
+catch(err){flash('Enregistrement impossible ('+(err?.code||'erreur')+'). Envoie-moi ce message dans le chat :',msg)}
+finally{$('go').disabled=false}});
+
+const ST={en_attente:['En attente','wait'],en_cours:['En cours','run'],pret:['Prêt','ok'],erreur:['Problème','run']};
+function renderQueue(){const q=$('queue');q.replaceChildren();
+if(!requests.length){q.append(el('li','empty','Aucune demande pour l\'instant.'));return}
+for(const r of [...requests].sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''))){const li=el('li');const[lab,cls]=ST[r.status]||ST.en_attente;li.append(el('span','chip '+cls,lab),el('span','h','@'+r.handle),el('span','d grow',(r.note?r.note+' · ':'')+fmtDate(r.createdAt)+(r.message?' · '+r.message:'')));
+if(r.status==='pret'&&reports.some(x=>x.handle===r.handle)){const b=el('button','btn ghost','Voir le top 10');b.type='button';b.onclick=()=>{show(r.handle);setTab('results')};li.append(b)}
+q.append(li)}}
+
+function renderArtists(){const a=$('artists');a.replaceChildren();if(!reports.length){a.append(el('p','empty',db?'Aucun artiste analysé pour l\'instant.':'Résultats indisponibles dans cette vue.'));return}
+for(const r of [...reports].sort((x,y)=>(y.createdAt||'').localeCompare(x.createdAt||''))){const b=el('button',null,r.artist||('@'+r.handle));b.type='button';b.setAttribute('aria-pressed',r.handle===current);b.onclick=()=>show(r.handle);a.append(b)}}
+
+function show(h){current=h;try{localStorage.setItem('scoutArtist',h)}catch(e){}renderArtists();renderReport()}
+
+function renderReport(){const box=$('report');box.replaceChildren();const r=reports.find(x=>x.handle===current);if(!r)return;
+const head=el('div','rhead');head.append(el('span','eyebrow','@'+r.handle+' · analysé le '+fmtDate(r.createdAt)+(r.postsScanned?' · '+r.postsScanned+' posts passés en revue':'')),el('h2',null,r.artist||('@'+r.handle)));if(r.summary)head.append(el('p',null,r.summary));if(r.excluded)head.append(el('p',null,'Écarté : '+r.excluded));box.append(head);
+const sb=el('div','sortbar');sb.style.margin='16px 0';sb.append(el('span',null,'Trier par'));for(const[k,l]of[['total','Score global'],['brod','Brodabilité'],['bank','Bankabilité'],['test','Test rapide']]){const b=el('button',null,l);b.type='button';b.setAttribute('aria-pressed',sortKey===k);b.onclick=()=>{sortKey=k;renderReport()};sb.append(b)}box.append(sb);
+const works=(r.works||[]).map(w=>({...w,_t:total(w)}));works.sort((a,b)=>b._t-a._t);works.forEach((w,i)=>w._rank=i+1);
+const view=sortKey==='total'?works:[...works].sort((a,b)=>(+b.scores?.[sortKey]||0)-(+a.scores?.[sortKey]||0)||b._t-a._t);
+const grid=el('div','grid');for(const w of view){const c=el('article','card'+(r.pick?.title===w.title?' sel':''));c.append(el('div','rank',String(w._rank).padStart(2,'0')));
+const fig=el('figure');if(w.image){const img=el('img');img.src=(db?'/_blob/':'img/')+w.image+(db?'':'.jpg');img.alt=w.title||'';img.loading='lazy';fig.append(img)}c.append(fig);
+const b=el('div','cbody');const tt=el('div','ttl');tt.append(el('h3',null,w.title||'Sans titre'));const tot=el('div','total',String(w._t));tot.append(el('small',null,'/ 100'));tt.append(tot);b.append(tt);if(w.sub)b.append(el('p','sub',w.sub));
+const ax=el('div','axes');for(const[k,l]of AX){const v=+w.scores?.[k]||0;const row=el('div','axis');const bar=el('span','bar');const fill=el('i');fill.style.width=(v*10)+'%';bar.append(fill);row.append(el('span',null,l),bar,el('b',null,v.toLocaleString('fr-FR')));ax.append(row)}b.append(ax);
+const f=el('div','facts');if(w.engagement)f.append(el('span',null,'Engagement ×'+(+w.engagement).toLocaleString('fr-FR',{maximumFractionDigits:1})));if(w.colors)f.append(el('span',null,'~'+w.colors+' couleurs de fil'));if(w.points)f.append(el('span',null,w.points+' points'));if(w.malus)f.append(el('span','flag','Malus −'+w.malus));for(const x of w.flags||[])f.append(el('span','flag',x));if(f.childElementCount)b.append(f);
+if(w.note)b.append(el('p','note',w.note));
+const m=el('p','meta');m.append(el('span',null,[w.date,fmtLikes(w.likes)].filter(Boolean).join(' · ')));const a=el('a',null,w.postUrl?'Voir le post':'Son Instagram');a.href=w.postUrl||r.url||('https://www.instagram.com/'+r.handle+'/');a.target='_blank';a.rel='noopener';m.append(a);b.append(m);
+const p=el('button','pick',r.pick?.title===w.title?'Choisie':'Choisir celle-ci');p.type='button';p.onclick=()=>pick(r,w);b.append(p);c.append(b);grid.append(c)}
+box.append(grid);
+if(r.pick){$('sticky').hidden=false;$('msg').replaceChildren('Choix pour '+(r.artist||'@'+r.handle)+' : ',el('strong',null,r.pick.title));copyTxt=(r.artist||'@'+r.handle)+' : je prends « '+r.pick.title+' »'}else $('sticky').hidden=true}
+
+async function pick(r,w){copyTxt=(r.artist||'@'+r.handle)+' : je prends le n° '+w._rank+' (« '+w.title+' »)';$('sticky').hidden=false;$('msg').replaceChildren('Choix : ',el('strong',null,'n° '+w._rank+', '+w.title),db?' · enregistré':' · dis-le-moi dans le chat');
+if(db){try{await db.doc('reports/'+r.handle).update({pick:{title:w.title,rank:w._rank,at:new Date().toISOString()}})}catch(e){$('msg').append(' (enregistrement impossible)')}}}
+$('copy').onclick=()=>navigator.clipboard.writeText(copyTxt).then(()=>$('copy').textContent='Copié').catch(()=>$('copy').textContent='Copie impossible');
+
+try{const t=localStorage.getItem('scoutTab');if(t)setTab(t);current=localStorage.getItem('scoutArtist')}catch(e){}
+
+(async()=>{try{db=window.claude?.use?await window.claude.use('db'):null}catch(e){db=null}
+if(!db){try{const ix=await (await fetch('data/index.json')).json();reports=await Promise.all(ix.reports.map(async h=>({handle:h,...await (await fetch('data/'+h+'.json')).json()})));if(!reports.some(r=>r.handle===current))current=[...reports].sort((x,y)=>(y.createdAt||'').localeCompare(x.createdAt||''))[0]?.handle||null}catch(e){}
+requests=reports.map(r=>({handle:r.handle,status:'pret',createdAt:r.createdAt}));renderQueue();renderArtists();renderReport();return}
+db.collection('requests').onSnapshot(s=>{requests=s.docs.map(d=>({handle:d.id,...d.data()}));renderQueue()},()=>{});
+db.collection('reports').onSnapshot(s=>{reports=s.docs.map(d=>({handle:d.id,...d.data()}));if(!reports.some(r=>r.handle===current))current=[...reports].sort((x,y)=>(y.createdAt||'').localeCompare(x.createdAt||''))[0]?.handle||null;renderArtists();renderReport();renderQueue()},()=>{});
+})();
+</script>
+</body></html>
